@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Maize Disease & OOD Detection</title>
+    <link rel="stylesheet" href="/static/style_new.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Maize Disease Detection</h1>
+        <p>Upload a maize leaf image to classify the disease and detect OOD.</p>
+
+        <form id="upload-form" enctype="multipart/form-data">
+            <input type="file" id="file" name="file" accept="image/*" required>
+            <button type="submit">Predict</button>
+        </form>
+
+        <div id="preview-container">
+            <img id="preview" src="#" alt="Image Preview" style="display:none;">
+        </div>
+
+        <div id="result-container">
+            <span id="result-badge" class="badge"></span>
+            <div id="confidence-bar-container">
+                <div id="confidence-bar"></div>
+            </div>
+            <div id="tips"></div>
+            <pre id="result-json"></pre>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('upload-form');
+        const preview = document.getElementById('preview');
+        const badge = document.getElementById('result-badge');
+        const confidenceBar = document.getElementById('confidence-bar');
+        const tipsDiv = document.getElementById('tips');
+        const resultJSON = document.getElementById('result-json');
+
+        document.getElementById('file').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('file');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            badge.innerText = "Predicting...";
+            badge.className = "badge info";
+            confidenceBar.style.width = "0%";
+            tipsDiv.innerText = "";
+            resultJSON.innerText = "";
+
+            try {
+                const res = await fetch('/predict', {method: 'POST', body: formData});
+                const data = await res.json();
+
+                if (data.prediction === "Unknown") {
+                    badge.innerText = "Unknown (OOD)";
+                    badge.className = "badge ood";
+                    confidenceBar.style.width = "0%";
+                    tipsDiv.innerText = data.tips;
+                } else {
+                    const confPercent = (data.confidence*100).toFixed(2);
+                    badge.innerText = `${data.prediction} (${confPercent}%)`;
+                    badge.className = "badge success";
+                    confidenceBar.style.width = confPercent + "%";
+                    tipsDiv.innerText = data.tips;
+                }
+
+                resultJSON.innerText = JSON.stringify(data, null, 2);
+            } catch (err) {
+                badge.innerText = "Error";
+                badge.className = "badge error";
+                resultJSON.innerText = err;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 400px;
+}
+
+h1 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+input[type="file"] {
+    padding: 10px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    background-color: #007bff;
+    color: white;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#preview-container {
+    margin-bottom: 20px;
+}
+
+#preview {
+    max-width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.badge {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.badge.success {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge.ood {
+    background-color: #dc3545;
+    color: white;
+}
+
+.badge.info {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.badge.error {
+    background-color: #ffc107;
+    color: white;
+}
+
+#confidence-bar-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    height: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+#confidence-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #28a745;
+    transition: width 0.5s ease;
+}
+
+#tips {
+    background-color: #f7f7f7;
+    padding: 8px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+pre {
+    text-align: left;
+    background: #f7f7f7;
+    padding: 10px;
+    border-radius: 8px;
+    overflow-x: auto;
+    max-height: 150px;
+}
